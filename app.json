@@ -1,0 +1,7 @@
+{
+  "name": "is-same-dash",
+  "description": "Dashboard to check if webpages are deployed correctly across different servers.",
+  "repository": "https://github.com/alseambusher/is-same-dash",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["dashboard", "node"]
+}
