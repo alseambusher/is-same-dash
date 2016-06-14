@@ -12,7 +12,6 @@
     "nedb": "latest",
     "body-parser": "latest",
     "mime": "latest",
-    "cron-parser": "latest",
     "connect-busboy": "latest"
   },
   "engines": {
