@@ -1,16 +1,28 @@
+#!/bin/bash
+
 source config
 
-o1=`mktemp`
-o2=`mktemp`
-if [ $use_secure -eq 1 ]
-then
-  wget --user=$username --password=$password $1 -O $o1
-  wget --user=$username --password=$password $2 -O $o2
-else
-  wget $1 -o $o1
-  wget $2 -o $o2
-fi
-echo $o1 $o2
-cat $o1 | openssl sha1
-cat $o2 | openssl sha1
-rm $o1 $o2
+index=0
+for url in $@
+do
+  o1=$(mktemp)
+  if [ $use_secure -eq 1 ]
+  then
+    wget --user=$username --password=$password $url -O $o1
+  else
+    wget $url -O $o1
+  fi
+  cat $o1 | openssl sha1
+  data[index]=$(cat $o1)
+  index=$(($index+1))
+  rm $o1
+done
+
+for ((i = 0; i < ${#data[@]}; i++))
+do
+    for ((j = 0; j < ${#data[@]}; j++))
+    do
+      #DIFF=$(diff <(echo "${data[$i]}") <(echo "${data[$j]}"))
+      echo `diff <(echo "${data[$i]}") <(echo "${data[$j]}")`
+    done
+done

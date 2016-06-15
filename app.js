@@ -7,7 +7,8 @@ var path = require('path');
 var mime = require('mime');
 var fs = require('fs');
 var busboy = require('connect-busboy'); // for file upload
-
+var child_process= require("child_process");
+var servers = require("./servers");
 
 // include the routes
 var routes = require("./routes").routes;
@@ -16,7 +17,7 @@ var routes = require("./routes").routes;
 app.set('view engine', 'ejs');
 
 var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
@@ -35,8 +36,17 @@ app.get(routes.root, function(req, res) {
 	dash.jobs(function(){
 		res.render('index', {
 			routes : JSON.stringify(routes),
+      servers : JSON.stringify(servers.servers),
 		});
 	});
+})
+
+app.post(routes.run_tile, function(req, res){
+  child_process.execFile("scripts/fetch.sh", req.body.urls, function (error, stdout, stderr){
+    result = stdout.split("\n");
+    console.log(stdout)
+    res.json({ sha: result.slice(0, req.body.urls.length), diff: result.slice(req.body.urls.length).join("\n")});
+  });
 })
 
 app.listen(app.get('port'), function() {

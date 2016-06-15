@@ -26,3 +26,60 @@ function setCrontab(){
 		});
 	});
 }
+
+function runTile(id){
+		console.log(id);
+		$.post(routes.run_tile, { urls: ['https://author.stage.corp.adobe.com/content/dotcom/en/technology.html', 'https://author.stage.corp.adobe.com/content/dotcom/en/technology.html']}, function(data){
+			console.log(data);
+		});
+}
+
+function newServerUrlContainer(id){
+	var _id = Math.random().toString(36).slice(2);
+	var tile = "<div class='input-group'>\
+      <div class='input-group-btn'>\
+        <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Server <span class='caret'></span></button>\
+        <ul class='dropdown-menu'>";
+	for(var i=0; i<servers.length; i++){
+		tile += "<li><a href='#'>"+servers[i]+"</a></li>";
+	}
+
+	tile += "<li role='separator' class='divider'></li>\
+          <li><a href='#'>Add new</a></li>\
+        </ul>\
+		<a class='btn btn-default'>\
+			<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>\
+		</a>\
+      </div><!-- /btn-group -->\
+			<span class='input-group-addon' id='basic-addon3'>https://</span>\
+      <input type='text' class='form-control' aria-label='...'>\
+    </div><!-- /input-group -->\
+		";
+	$("#"+id+"container").append(tile);
+}
+
+function newTile(){
+	var id = Math.random().toString(36).slice(2);
+	var tile = "<div class='alert alert-info alert-dismissible' role='alert' id='"+id+"'>\
+  	<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\
+		<a class='btn btn-default' onclick='runTile(\""+id+"\");'>\
+			<span class='glyphicon glyphicon-play' aria-hidden='true'></span>\
+		</a>\
+		<a class='btn btn-default' onclick='newServerUrlContainer(\""+id+"\");'>\
+			<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>\
+		</a>\
+		<a class='btn btn-default'>\
+			<span class='glyphicon glyphicon-time' aria-hidden='true'></span>\
+		</a>\
+		<a class='btn btn-default'>\
+			<span class='glyphicon glyphicon-floppy-disk' aria-hidden='true'></span>\
+		</a>\
+		<a class='btn btn-default'>\
+			<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>\
+		</a>\
+  	<br/><br/> \
+		<div id='"+id+"container'></div>\
+	</div>";
+	$(".tiles").prepend(tile);
+	return id;
+}

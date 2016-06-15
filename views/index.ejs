@@ -5,25 +5,27 @@
 <script src="script.js"></script>
 <script src="bootstrap.min.js"></script>
 <link rel="stylesheet" href="bootstrap.min.css" />
+<link rel="stylesheet" href="style.css" />
 <script type="text/javascript">
-	var crontabs = [];
 	var routes = [];
 	$(function () {
 		// initialize tooltips
 		$('[data-toggle="tooltip"]').tooltip();
 		routes = JSON.parse('<%- routes %>');
+		servers = eval('<%- servers %>');
 	})
 </script>
 </head>
 <body>
 <% include navbar %>
 <div class="container">
-	<a class="btn btn-primary" onclick="newJob();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New tile</a>
+	<a class="btn btn-primary" onclick="newTile();"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New tile</a>
 	<a class="btn btn-info" onclick="doBackup();"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save</a>
-	<a class="btn btn-warning" onclick="import_db()"><span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import</a>
-	<a class="btn btn-warning" href="<%= JSON.parse(routes).export %>"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Export</a>
 	<br/>
 	<br/>
+	<hr/>
+	<div class="tiles">
+	</div>
 </div>
 <% include popup.ejs %>
 </body>
