@@ -27,35 +27,12 @@ function setCrontab(){
 	});
 }
 
+// Tile
 function runTile(id){
 		console.log(id);
 		$.post(routes.run_tile, { urls: ['https://author.stage.corp.adobe.com/content/dotcom/en/technology.html', 'https://author.stage.corp.adobe.com/content/dotcom/en/technology.html']}, function(data){
 			console.log(data);
 		});
-}
-
-function newServerUrlContainer(id){
-	var _id = Math.random().toString(36).slice(2);
-	var tile = "<div class='input-group'>\
-      <div class='input-group-btn'>\
-        <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Server <span class='caret'></span></button>\
-        <ul class='dropdown-menu'>";
-	for(var i=0; i<servers.length; i++){
-		tile += "<li><a href='#'>"+servers[i]+"</a></li>";
-	}
-
-	tile += "<li role='separator' class='divider'></li>\
-          <li><a href='#'>Add new</a></li>\
-        </ul>\
-		<a class='btn btn-default'>\
-			<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>\
-		</a>\
-      </div><!-- /btn-group -->\
-			<span class='input-group-addon' id='basic-addon3'>https://</span>\
-      <input type='text' class='form-control' aria-label='...'>\
-    </div><!-- /input-group -->\
-		";
-	$("#"+id+"container").append(tile);
 }
 
 function newTile(){
@@ -78,8 +55,37 @@ function newTile(){
 			<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>\
 		</a>\
   	<br/><br/> \
-		<div id='"+id+"container'></div>\
+		<div id='"+id+"-container'></div>\
 	</div>";
 	$(".tiles").prepend(tile);
 	return id;
+}
+
+//ServerUrlContainer
+function newServerUrlContainer(id){
+	var _id = Math.random().toString(36).slice(2);
+	var tile = "<div class='input-group' id='"+_id+"'>\
+      <div class='input-group-btn'>\
+        <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Server <span class='caret'></span></button>\
+        <ul class='dropdown-menu'>";
+	for(var i=0; i<servers.length; i++){
+		tile += "<li onclick='$(\"#"+_id+"-server\").html(\""+servers[i]+"\")'><a href='#'>"+servers[i]+"</a></li>";
+	}
+
+	var value = $("#"+id+"-container .form-control").last().val();
+	tile += "<li role='separator' class='divider'></li>\
+          <li><a href='#'>Add new</a></li>\
+        </ul>\
+		<a class='btn btn-default' onclick='$(\"#"+_id+"\").remove()'>\
+			<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>\
+		</a>\
+      </div><!-- /btn-group -->\
+			<span class='input-group-addon' id='"+_id+"-server'>https://</span>\
+      <input type='text' class='form-control' id='"+_id+"-path' value='"+(value==undefined? "": value)+"'>\
+    </div><!-- /input-group -->";
+	$("#"+id+"-container").append(tile);
+}
+
+function getTileServerUrls(id){
+	//TODO
 }
