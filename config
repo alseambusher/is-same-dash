@@ -2,7 +2,7 @@
 
 # use_secure=0 when there is no password required to access servers
 # use_secure=1 when username and password are required
-use_secure=1
+use_secure=0
 
-username=alse
-password=#ntuitAdobe01
+username=admin
+password=admin

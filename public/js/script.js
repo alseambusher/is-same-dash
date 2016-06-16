@@ -29,8 +29,7 @@ function setCrontab(){
 
 // Tile
 function runTile(id){
-		console.log(id);
-		$.post(routes.run_tile, { urls: ['https://author.stage.corp.adobe.com/content/dotcom/en/technology.html', 'https://author.stage.corp.adobe.com/content/dotcom/en/technology.html']}, function(data){
+		$.post(routes.run_tile, { urls: getTileUrls(id)}, function(data){
 			console.log(data);
 		});
 }
@@ -42,7 +41,7 @@ function newTile(){
 		<a class='btn btn-default' onclick='runTile(\""+id+"\");'>\
 			<span class='glyphicon glyphicon-play' aria-hidden='true'></span>\
 		</a>\
-		<a class='btn btn-default' onclick='newServerUrlContainer(\""+id+"\");'>\
+		<a class='btn btn-default' onclick='newServerPathContainer(\""+id+"\");'>\
 			<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>\
 		</a>\
 		<a class='btn btn-default'>\
@@ -62,7 +61,7 @@ function newTile(){
 }
 
 //ServerUrlContainer
-function newServerUrlContainer(id){
+function newServerPathContainer(id){
 	var _id = Math.random().toString(36).slice(2);
 	var tile = "<div class='input-group' id='"+_id+"'>\
       <div class='input-group-btn'>\
@@ -73,6 +72,7 @@ function newServerUrlContainer(id){
 	}
 
 	var value = $("#"+id+"-container .form-control").last().val();
+
 	tile += "<li role='separator' class='divider'></li>\
           <li><a href='#'>Add new</a></li>\
         </ul>\
@@ -81,11 +81,28 @@ function newServerUrlContainer(id){
 		</a>\
       </div><!-- /btn-group -->\
 			<span class='input-group-addon' id='"+_id+"-server'>https://</span>\
-      <input type='text' class='form-control' id='"+_id+"-path' value='"+(value==undefined? "": value)+"'>\
+      <input type='text' class='form-control' id='"+_id+"-path' value='"+(value==undefined ? "" : value)+"'>\
     </div><!-- /input-group -->";
+
 	$("#"+id+"-container").append(tile);
 }
 
-function getTileServerUrls(id){
-	//TODO
+function getTileServerPaths(id){
+	var path_nodes = $("#"+id+"-container .form-control");
+	var server_nodes = $("#"+id+"-container .input-group-addon");
+	var result = [];
+	for(var i=0; i<path_nodes.length; i++){
+		result.push([server_nodes[i].html(), path_nodes[i].val()]);
+	}
+	return result;
+}
+
+function getTileUrls(id){
+	var path_nodes = $("#"+id+"-container .form-control");
+	var server_nodes = $("#"+id+"-container .input-group-addon");
+	var result = [];
+	for(var i=0; i<path_nodes.length; i++){
+		result.push(server_nodes[i].innerHTML+path_nodes[i].value);
+	}
+	return result;
 }
