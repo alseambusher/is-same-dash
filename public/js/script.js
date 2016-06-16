@@ -30,6 +30,7 @@ function setCrontab(){
 // Tile
 function runTile(id){
 	var urls = getTileUrls(id);
+	$("#"+id+" .loader").removeAttr("style");
 	$.post(routes.run_tile, {urls: urls}, function(data){
 		var resultTile = "<div id='"+id+"-results-same'></div>";
 		resultTile += "<div id='"+id+"-results-different'></div>";
@@ -45,6 +46,9 @@ function runTile(id){
 		for (var sha in grouped) {
 			$("#"+id+"-results-same").append("<div class='alert alert-success' style='margin-bottom: 0px'>"+grouped[sha].join("<br/>")+"</div>");
 		}
+		$("#"+id+" .loader").attr("style", "display:none");
+	}).error(function() {
+		$("#"+id+" .loader").attr("style", "display:none");
 	});
 }
 
@@ -68,7 +72,8 @@ function newTile(){
 			<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>\
 		</a>\
   	<br/><br/> \
-		<div id='"+id+"-container'></div>\
+		<div id='"+id+"-container'></div><br/>\
+		<div class='loader' style='display:none'>Loading...</div>\
 		<div id='"+id+"-results'></div>\
 	</div>";
 	$(".tiles").prepend(tile);

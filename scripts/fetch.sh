@@ -20,7 +20,6 @@ done
 #this is used as a splitter
 rand=$(($RANDOM*$RANDOM*$RANDOM))
 echo $rand
-echo ${data[@]} > err
 for ((i = 0; i < ${#data[@]}; i++))
 do
     for ((j = 0; j < ${#data[@]}; j++))
