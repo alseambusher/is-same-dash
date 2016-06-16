@@ -13,16 +13,25 @@ do
     wget $url -O $o1
   fi
   cat $o1 | openssl sha1
-  data[index]=$(cat $o1)
+  data[$index]="$o1"
   index=$(($index+1))
-  rm $o1
 done
 
+#this is used as a splitter
+rand=$(($RANDOM*$RANDOM*$RANDOM))
+echo $rand
+echo ${data[@]} > err
 for ((i = 0; i < ${#data[@]}; i++))
 do
     for ((j = 0; j < ${#data[@]}; j++))
     do
-      #DIFF=$(diff <(echo "${data[$i]}") <(echo "${data[$j]}"))
-      echo `diff <(echo "${data[$i]}") <(echo "${data[$j]}")`
+      diff "${data[$i]}" "${data[$j]}" | head
+      echo $rand
     done
+done
+
+# remove all the files downloaded
+for ((i = 0; i < ${#data[@]}; i++))
+do
+  rm ${data[$i]}
 done

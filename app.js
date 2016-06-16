@@ -44,8 +44,8 @@ app.get(routes.root, function(req, res) {
 app.post(routes.run_tile, function(req, res){
   child_process.execFile("scripts/fetch.sh", req.body.urls, function (error, stdout, stderr){
     result = stdout.split("\n");
-    console.log(stdout)
-    res.json({ sha: result.slice(0, req.body.urls.length), diff: result.slice(req.body.urls.length).join("\n")});
+    separator = result[req.body.urls.length]
+    res.json({ sha: result.slice(0, req.body.urls.length), diff: result.slice(req.body.urls.length+1).join("\n").split(separator)});
   });
 })
 

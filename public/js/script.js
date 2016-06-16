@@ -29,9 +29,23 @@ function setCrontab(){
 
 // Tile
 function runTile(id){
-		$.post(routes.run_tile, { urls: getTileUrls(id)}, function(data){
-			console.log(data);
-		});
+	var urls = getTileUrls(id);
+	$.post(routes.run_tile, {urls: urls}, function(data){
+		var resultTile = "<div id='"+id+"-results-same'></div>";
+		resultTile += "<div id='"+id+"-results-different'></div>";
+		$("#"+id+"-results").html(resultTile);
+		console.log(data);
+		var grouped = {}
+		for (var i=0; i<data.sha.length; i++){
+				if (grouped[data.sha[i]])
+					grouped[data.sha[i]].push(urls[i])
+				else
+					grouped[data.sha[i]] = [urls[i]]
+		}
+		for (var sha in grouped) {
+			$("#"+id+"-results-same").append("<div class='alert alert-success' style='margin-bottom: 0px'>"+grouped[sha].join("<br/>")+"</div>");
+		}
+	});
 }
 
 function newTile(){
@@ -55,6 +69,7 @@ function newTile(){
 		</a>\
   	<br/><br/> \
 		<div id='"+id+"-container'></div>\
+		<div id='"+id+"-results'></div>\
 	</div>";
 	$(".tiles").prepend(tile);
 	return id;
